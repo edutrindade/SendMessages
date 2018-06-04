@@ -20,8 +20,15 @@ class Product extends Model
         ];  
     }
    
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsToMany(Category::class);
+    }
+
+    // one to many -> um produto pode ter uma ou várias fotos
+    public function photos()
+    {
+        return $this->hasMany(ProductPhoto::class); // hasMany contrário do belongTo
     }
 }
 
