@@ -4,6 +4,7 @@ namespace CodeShopping\Http\Controllers\Auth;
 
 use CodeShopping\User;
 use CodeShopping\Http\Controllers\Controller;
+use CodeShopping\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;

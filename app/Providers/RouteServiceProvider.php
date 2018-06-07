@@ -43,6 +43,14 @@ class RouteServiceProvider extends ServiceProvider
             $collection = $query->whereId($value)->orWhere('slug', $value)->get();
             return $collection->first();
         });
+
+        Route::bind('user', function($value){
+            /** @var Collection $collection */
+            $query = User::query();
+            $query = $this->onlyTrashedIfRequested($query);
+            $collection = $query->whereId($value)->orWhere('id', $value)->get();
+            return $collection->first();
+        });
     }
 
     private function onlyTrashedIfRequested(Builder $query){
