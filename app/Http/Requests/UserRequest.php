@@ -4,7 +4,7 @@ namespace CodeShopping\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,8 +15,8 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6'
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6|max:16',
         ];
     }
 }
