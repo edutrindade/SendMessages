@@ -24,6 +24,7 @@ class ProductPhoto extends Model
     {
         try {
             self::uploadFiles($productId, $files);  
+            \DB::beginTransaction();
             $photos = self::createPhotosModels($productId, $files);
             \DB::commit();
             return new Collection($photos);             
