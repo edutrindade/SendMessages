@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $query = Product::query();
         $query = $this->onlyTrashedIfRequested($request, $query);
-        $products = $query->paginate(15);
+        $products = $query->paginate(10);
         return ProductResource::collection($products);
     }
 
@@ -39,7 +39,7 @@ class ProductController extends Controller
         $product->fill($request->all());
         $product->save();
         //return $product; //return new ProductResource($product);
-        return response()->json([], 204); //Não exibe dados atualizados
+        return response()->json([], 200);
     }
 
     public function destroy(Product $product)

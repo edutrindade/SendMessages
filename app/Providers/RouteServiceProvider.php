@@ -60,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    private function onlyTrashedIfRequested(Builder $query){
+    private function onlyTrashedIfRequested(Request $request, Builder $query){
         if(\Request::get('trashed') == 1) {
             $query = $query->onlyTrashed();
         }

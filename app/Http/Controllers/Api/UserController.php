@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $query = User::query();
         $query = $this->onlyTrashedIfRequested($request, $query);
-        $users = $query->paginate(15);
+        $users = $query->paginate(10);
         return UserResource::collection($users);
     }
 
@@ -40,7 +40,8 @@ class UserController extends Controller
     {
         $user->fill($request->all());
         $user->save();
-        return new UserResource($user); //Não exibe dados atualizados
+        //return new UserResource($user); //Não exibe dados atualizados
+        return response()->json([], 200); 
     }
 
     public function destroy(User $user)
