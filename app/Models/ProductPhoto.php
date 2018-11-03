@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace CodeShopping\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use CodeShopping\Http\Resources\ProductPhotoCollection;
 
 class ProductPhoto extends Model
@@ -83,7 +85,7 @@ class ProductPhoto extends Model
         }
     }
 
-    public static function uploadFiles($productId, array $files)
+    public static function uploadFiles(int $productId, array $files)
     {
         $dir = self::photosDir($productId);
         //* @var UploadedFile $file */

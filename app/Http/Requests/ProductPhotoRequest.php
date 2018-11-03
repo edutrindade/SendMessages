@@ -13,7 +13,7 @@ class ProductPhotoRequest extends FormRequest
 
     public function rules()
     {
-        return $this->route('photo') ? $this->rulesCreate(): $this->rulesUpdate();
+        return !$this->route('photo') ? $this->rulesCreate(): $this->rulesUpdate();
     }
 
     public function rulesCreate()

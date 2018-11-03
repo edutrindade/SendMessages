@@ -7,13 +7,18 @@ use CodeShopping\Http\Resources\ProductInputResource;
 use CodeShopping\Http\Requests\ProductInputRequest;
 use CodeShopping\Models\ProductInput;
 use Illuminate\Http\Request;
-
+use CodeShopping\Http\Filters\ProductInputFilter;
+use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 
 class ProductInputController extends Controller
 {
+    use Filterable;
+
     public function index()
     {
-        $inputs = ProductInput::with('product')->paginate(15);
+        $filter = app(ProductInputFilter::class);
+        $filterQuery = ProductInput::with('product')->filtered($filter);
+        $inputs = $filterQuery->paginate();
         return ProductInputResource::collection($inputs);
     }
 

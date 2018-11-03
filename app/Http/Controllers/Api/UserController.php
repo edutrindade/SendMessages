@@ -11,16 +11,29 @@ use CodeShopping\Http\Requests\UserRequest;
 use CodeShopping\Common\OnlyTrashed;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use CodeShopping\Http\Filters\UserFilter;
+use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 
 class UserController extends Controller
 {
-    use OnlyTrashed;
+    use OnlyTrashed, Filterable;
 
-    public function index(Request $request)
+    /*public function index(Request $request)
     {
         $query = User::query();
         $query = $this->onlyTrashedIfRequested($request, $query);
         $users = $query->paginate(10);
+        return UserResource::collection($users);
+    }*/
+
+    public function index(Request $request)
+    {
+        /** @var UserFilter $filter */
+        $filter = app(UserFilter::class);
+        /** @var Builder $filterQuery */
+        //$filter = $this->onlyTrashedIfRequested($request, $filter);
+        $filterQuery = User::filtered($filter);
+        $users = $request->has('all') ? $filterQuery->get() : $filterQuery->paginate(10);
         return UserResource::collection($users);
     }
 

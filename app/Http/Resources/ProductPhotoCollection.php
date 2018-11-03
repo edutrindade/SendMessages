@@ -9,7 +9,7 @@ class ProductPhotoCollection extends ResourceCollection
 {
     private $product;
 
-    public function _construct($construct, Product $product)
+    public function _construct($resource, Product $product)
     {
         $this->product = $product;
         parent::_construct($resource);

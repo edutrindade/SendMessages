@@ -2,7 +2,19 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { ModalComponent } from '../../../bootstrap/modal/modal.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryHttpService } from '../../../../services/http/category-http.service';
-import { Category } from '../../../../model';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import fieldsOptions from '../category-form/category-fields-options';
+
+/* Exemplo de função personalizada
+  function myValidator(param1){
+    return function (control: AbstractControl){
+      if(control.value == 'Eduardo'){
+        return null;
+      }
+    }
+    return {Eduardo: true}
+    //{required: true}
+} chamo myValidator no Construtor*/
 
 @Component({
   selector: 'category-new-modal',
@@ -11,32 +23,49 @@ import { Category } from '../../../../model';
 })
 export class CategoryNewModalComponent implements OnInit {
 
-  category: Category = {
-    name: '',
-    active: true
-  };
+  form: FormGroup;
+  errors = {}
 
   @ViewChild(ModalComponent) modal: ModalComponent;
   
   @Output() onSuccess: EventEmitter<any> = new EventEmitter<any>();
   @Output() onError: EventEmitter<HttpErrorResponse> = new EventEmitter<HttpErrorResponse>();
 
-  constructor(public categoryHttp: CategoryHttpService) { }
+  constructor(public categoryHttp: CategoryHttpService, private formBuilder: FormBuilder) {
+      const maxLength = fieldsOptions.name.validationMessage.maxlength;
+      this.form = this.formBuilder.group({
+        name: ['', [Validators.required, Validators.maxLength(maxLength)]],
+        active: true
+      });
+  }
 
   ngOnInit() {
   }
 
   submit(){
     this.categoryHttp
-      .create(this.category)
+      .create(this.form.value)
       .subscribe((category) => {
-      this.onSuccess.emit(category);
-      this.modal.hide();
-    }, error => this.onError.emit(error));
+        this.form.reset({
+          name: '',
+          active: true
+        });
+        this.onSuccess.emit(category);
+        this.modal.hide();
+    }, responseError => {
+      if(responseError.status === 422){
+        this.errors = responseError.error.errors
+      }
+      this.onError.emit(responseError)
+    });
   }
 
   showModal(){
     this.modal.show();
+  }
+
+  showErrors(){
+    return Object.keys(this.errors).length != 0;
   }
 
   hideModal($event){

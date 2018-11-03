@@ -6,7 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductPhotoResource extends JsonResource
 {
-    public function _construct($resource, $isCollection)
+    private $isCollection;
+
+    public function _construct($resource, $isCollection = false)
     {
         parent::_construct($resource);
         $this->isCollection = $isCollection;

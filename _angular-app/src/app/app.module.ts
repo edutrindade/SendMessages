@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { CategoryListComponent } from './components/pages/category/category-list/category-list.component';
 
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { AlertErrorComponent } from './components/bootstrap/alert-error/alert-error.component';
 import { ModalComponent } from './components/bootstrap/modal/modal.component';
@@ -29,6 +29,30 @@ import { AuthService } from './services/auth.service';
 import { NavbarComponent } from './components/bootstrap/navbar/navbar.component';
 import { RefreshTokenInterceptorService } from './services/refresh-token-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
+import { SortColumnComponent } from './components/common/sort-column/sort-column.component';
+import { CategorySearchFormComponent } from './components/pages/category/category-search-form/category-search-form.component';
+import { ProductSearchFormComponent } from './components/pages/product/product-search-form/product-search-form.component';
+import { UserSearchFormComponent } from './components/pages/user/user-search-form/user-search-form.component';
+import { CategoryFormComponent } from './components/pages/category/category-form/category-form.component';
+import { UserFormComponent } from './components/pages/user/user-form/user-form.component';
+import { ProductFormComponent } from './components/pages/product/product-form/product-form.component';
+import { FieldErrorComponent } from './components/bootstrap/field-error/field-error.component';
+import { IsInvalidDirective, IsInvalidControlDirective } from './directives/is-invalid.directive';
+import { ListErrorComponent } from './components/bootstrap/list-error/list-error.component';
+import { CardErrorComponent } from './components/bootstrap/card-error/card-error.component';
+import { ProductInputSearchFormComponent } from './components/pages/product-input/product-input-search-form/product-input-search-form.component';
+import { ProductInputFormComponent } from './components/pages/product-input/product-input-form/product-input-form.component';
+import { ProductInputListComponent } from './components/pages/product-input/product-input-list/product-input-list.component';
+import { ProductInputNewModalComponent } from './components/pages/product-input/product-input-new-modal/product-input-new-modal.component';
+import { Select2Module } from "ng2-select2";
+import { ProductPhotoManagerComponent } from './components/pages/product-photo/product-photo-manager/product-photo-manager/product-photo-manager.component';
+import { ProductPhotoUploadComponent } from './components/pages/product-photo/product-photo-upload/product-photo-upload/product-photo-upload.component';
+import { ProductPhotoEditModalComponent } from './components/pages/product-photo/product-photo-edit-modal/product-photo-edit-modal.component';
+import { ProductPhotoDeleteModalComponent } from './components/pages/product-photo/product-photo-delete-modal/product-photo-delete-modal.component';
+import { ProductOutputFormComponent } from './components/pages/product-output/product-output-form/product-output-form.component';
+import { ProductOutputListComponent } from './components/pages/product-output/product-output-list/product-output-list.component';
+import { ProductOutputNewModalComponent } from './components/pages/product-output/product-output-new-modal/product-output-new-modal.component';
+import { ProductOutputSearchFormComponent } from './components/pages/product-output/product-output-search-form/product-output-search-form.component';
 
 function jwtFactory(authService: AuthService){
     return {
@@ -62,14 +86,40 @@ function jwtFactory(authService: AuthService){
       UserNewModalComponent,
       UserEditModalComponent,
       UserDeleteModalComponent,
-      NavbarComponent
+      NavbarComponent,
+      SortColumnComponent,
+      CategorySearchFormComponent,
+      ProductSearchFormComponent,
+      UserSearchFormComponent,
+      CategoryFormComponent,
+      UserFormComponent,
+      ProductFormComponent,
+      FieldErrorComponent,
+      IsInvalidDirective,
+      IsInvalidControlDirective,
+      ListErrorComponent,
+      CardErrorComponent,
+      ProductInputSearchFormComponent,
+      ProductInputFormComponent,
+      ProductInputListComponent,
+      ProductInputNewModalComponent,
+      ProductPhotoManagerComponent,
+      ProductPhotoUploadComponent,
+      ProductPhotoEditModalComponent,
+      ProductPhotoDeleteModalComponent,
+      ProductOutputFormComponent,
+      ProductOutputListComponent,
+      ProductOutputNewModalComponent,
+      ProductOutputSearchFormComponent
     ],
     imports: [
       BrowserModule,
       FormsModule,
+      ReactiveFormsModule,
       HttpClientModule,
       AppRoutingModule,
       NgxPaginationModule,
+      Select2Module,
       JwtModule.forRoot({
           jwtOptionsProvider: {
             provide: JWT_OPTIONS,

@@ -51,6 +51,23 @@ class RouteServiceProvider extends ServiceProvider
             return $collection->first();
         });
 
+        Route::bind('input', function($value){
+            /** @var Collection $collection */
+            $query = Input::query();
+            $request = app(Request::class);
+            $query = $this->onlyTrashedIfRequested($request, $query);
+            return $query->find($value);
+        });
+
+        Route::bind('output', function($value){
+            /** @var Collection $collection */
+            $query = Output::query();
+            $request = app(Request::class);
+            $query = $this->onlyTrashedIfRequested($request, $query);
+            return $query->find($value);
+        });
+
+
         Route::bind('user', function($value){
             /** @var Collection $collection */
             $query = User::query();

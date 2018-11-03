@@ -7,6 +7,8 @@ use CodeShopping\Http\Resources\ProductOutputResource;
 use CodeShopping\Models\ProductOutput;
 use CodeShopping\Http\Requests\ProductOutputRequest;
 use Illuminate\Http\Request;
+use CodeShopping\Http\Filters\ProductOutputFilter;
+use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 
 
 class ProductOutputController extends Controller

@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ModalComponent } from '../../../bootstrap/modal/modal.component';
 import { HttpErrorResponse } from "@angular/common/http";
-import { User } from '../../../../model';
 import { UserHttpService } from '../../../../services/http/user-http.service';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import fieldsOptions from '../user-form/user-fields-options';
 
 @Component({
   selector: 'user-edit-modal',
@@ -12,21 +13,25 @@ import { UserHttpService } from '../../../../services/http/user-http.service';
 
 export class UserEditModalComponent implements OnInit {
 
-  user: User = {
-    name: '',
-    email: '',
-    password: '',
-  };
-  
   _userId: number;
+  form: FormGroup;
   
   @Output() onSuccess: EventEmitter<any> = new EventEmitter<any>();
   @Output() onError: EventEmitter<HttpErrorResponse> = new EventEmitter<HttpErrorResponse>();
 
   @ViewChild(ModalComponent) modal: ModalComponent;      
 
-  constructor(private userHttp: UserHttpService) { 
-  }
+  constructor(public userHttp: UserHttpService, private formBuilder: FormBuilder) {
+    const maxLengthName = fieldsOptions.name.validationMessage.maxlength;
+    const maxLengthEmail = fieldsOptions.email.validationMessage.maxlength;
+    const maxLengthPassword = fieldsOptions.password.validationMessage.maxlength;
+    const minLengthPassword = fieldsOptions.password.validationMessage.minlength;
+      this.form = this.formBuilder.group({
+        name: ['', [Validators.required, Validators.maxLength(maxLengthName)]],
+        email: ['', [Validators.required, Validators.maxLength(maxLengthEmail)]],
+        password: ['', [Validators.required, Validators.maxLength(maxLengthPassword), Validators.minLength(minLengthPassword)]]
+      });
+   }
 
   ngOnInit() {
   }
@@ -37,13 +42,19 @@ export class UserEditModalComponent implements OnInit {
       if (this._userId) {
           this.userHttp
             .get(this._userId)
-            .subscribe(user => this.user = user);
-      }
+            .subscribe(user => this.form.patchValue(user),
+            responseError => {
+              if(responseError.status === 401){
+                this.modal.hide();
+              }
+            }
+         )
     }
+  }
 
   submit(){
     this.userHttp
-      .update(this._userId, this.user)
+      .update(this._userId, this.form.value)
       .subscribe((user) => {
         this.onSuccess.emit(user);
         this.modal.hide();

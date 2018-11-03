@@ -3,16 +3,19 @@
   <table class="table table-striped">
     <thead>
       <tr>
-          <td colspan="5">
+          <td colspan="1">
             <button class="btn btn-primary" (click)="productInsertService.showModalInsert()"> Novo produto</button>
+          </td>
+          <td colspan="4">
+              <product-search-form (onSearch)="search($event)"></product-search-form>   
           </td>
       </tr>
       <tr>
-        <th style="width: 5%">ID</th>
-        <th style="width: 47%">Nome</th>
+        <th style="width: 5%" [sortColumn]="sortColumn" columnName="id" (onSort)="sort($event)">ID </th>
+        <th style="width: 47%" [sortColumn]="sortColumn" columnName="name" (onSort)="sort($event)">Nome </th>
         <th style="width: 8%">Ativo</th>
-        <th style="width: 10%">Preço</th>
-        <th style="width: 12%">Cadastrado</th>
+        <th style="width: 10%" [sortColumn]="sortColumn" columnName="price" (onSort)="sort($event)">Preço </th>
+        <th style="width: 12%" [sortColumn]="sortColumn" columnName="created_at" (onSort)="sort($event)">Cadastrado</th>
         <th style="width: 18%">Ações</th>
       </tr>
     </thead>
@@ -31,7 +34,9 @@
           <a href="javascript:void(0)" (click)="productDeleteService.showModalDelete(product.id)">
             <i class="fas fa-trash-alt"></i></a> |
           <a [routerLink]="['/products',product.id,'categories','list']">
-            <i class="fas fa-copyright"></i></a>
+            <i class="fas fa-copyright"></i></a> |
+          <a [routerLink]="['/products',product.id,'photos','manager']">
+            <i class="fas fa-image"></i></a>
         </td>
       </tr>
     </tbody>
