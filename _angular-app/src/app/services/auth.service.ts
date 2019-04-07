@@ -45,6 +45,7 @@ export class AuthService {
       id: decodedPayload.sub,
       name: decodedPayload.name,
       email: decodedPayload.email,
+      profile: decodedPayload.profile
     }: null;
   }
 
