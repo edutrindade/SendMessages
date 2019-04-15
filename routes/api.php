@@ -22,7 +22,11 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function(){
     Route::name('login_vendor')->post('login_vendor', 'AuthController@loginFirebase');
     Route::name('refresh')->post('refresh', 'AuthController@refresh');
 
+    Route::post('customers/phone_numbers', 'CustomerController@requestPhoneNumberUpdate');
+    Route::patch('customers/phone_numbers/{token}', 'CustomerController@updatePhoneNumber');
+    
     Route::resource('customers', 'CustomerController', ['only' => ['store']]);
+   
     Route::group(['middleware' => ['auth:api', 'jwt.refresh']], function(){
        
         Route::patch('profile', 'UserProfileController@update');
@@ -39,6 +43,7 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function(){
             Route::resource('outputs', 'ProductOutputController', ['only' => ['index', 'store', 'show']]);
             Route::patch('users/{user}/restore', 'UserController@restore');
             Route::resource('users', 'UserController', ['except' => ['create','edit']]);
+            Route::resource('chat_groups', 'ChatGroupController');
         });
         
     });

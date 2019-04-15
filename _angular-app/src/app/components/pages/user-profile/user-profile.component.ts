@@ -1,7 +1,11 @@
-import { NotifyMessageService } from './../../../services/notify-message.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { UserProfileHttpService } from 'src/app/services/http/user-profile-http.service';
+import { AuthService } from "../../../services/auth.service";
+import { NotifyMessageService } from "../../../services/notify-message.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit, EventEmitter, ViewChild } from "@angular/core";
+import { UserProfileHttpService } from "../../../services/http/user-profile-http.service";
+import { PhoneNumberAuthModalComponent } from "../../common/phone-number-auth-modal/phone-number-auth-modal.component";
+import { FirebaseAuthService } from "../../../services/firebase-auth.service";
+import fieldsOptions from './user-profile-fields-options';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,34 +15,65 @@ import { UserProfileHttpService } from 'src/app/services/http/user-profile-http.
 export class UserProfileComponent implements OnInit {
 
   form: FormGroup;
-  errors: {};
+  errors = {};
+  has_photo: boolean;
+
+  @ViewChild(PhoneNumberAuthModalComponent)
+  phoneNumberAuthModal: PhoneNumberAuthModalComponent;
 
   constructor(private formBuilder: FormBuilder,
               private userProfileHttp: UserProfileHttpService,
-              private notifyMessage: NotifyMessageService) {
-        this.form = this.formBuilder.group({
-            name: ['', [Validators.maxLength(255)]],
-            email: ['', [Validators.email, Validators.maxLength(255)]],
-            password: ['', Validators.minLength(6), Validators.maxLength(16)],
-            phone_number: null,
-            photo: false
-        });
+              private notifyMessage: NotifyMessageService,
+              public authService: AuthService,
+              private firebaseAuth: FirebaseAuthService) {
+                  this.form = this.formBuilder.group({
+                    name: ['', [
+                        Validators.maxLength(fieldsOptions.name.validationMessage.maxlength)
+                    ]],
+                    email: ['', [
+                        Validators.email, Validators.maxLength(fieldsOptions.email.validationMessage.maxlength)
+                    ]],
+                    password: ['', [
+                        Validators.minLength(fieldsOptions.password.validationMessage.minlength), 
+                        Validators.maxLength(fieldsOptions.password.validationMessage.maxlength)
+                    ]],
+                  phone_number: null,
+                  token: null,
+                  photo: false
+              });
+    this.form.patchValue(this.authService.me);
+    this.form.get('phone_number').setValue(this.authService.me.profile.phone_number);
+    this.setHasPhoto();
   }
 
   ngOnInit() {
   }
 
+  get fieldsOptions() : any {
+    return fieldsOptions;
+}
+
   submit(){
+    const data = Object.assign( {}, this.form.value);
+    delete data.phone_number;
     this.userProfileHttp
-      .update(this.form.value)
+      .update(data)
       .subscribe(
-        (data) => this.notifyMessage.success('Perfil atualizado com sucesso.'),
-        (responseError) => {
-          if (responseError.status === 422){
-            this.errors = responseError.error.errors
-          }
-        });
+          (data) => {
+            this.form.get('photo').setValue(false);
+            this.setHasPhoto();
+            this.notifyMessage.success('Perfil atualizado com sucesso.');
+          },
+          (responseError) => {
+            if (responseError.status === 422){
+              this.errors = responseError.error.errors
+            }
+          });
       return false;
+  }
+
+  setHasPhoto(){
+    this.has_photo = this.authService.me.profile.has_photo;
   }
 
   onChoosePhoto(files: FileList){
@@ -48,8 +83,25 @@ export class UserProfileComponent implements OnInit {
     this.form.get('photo').setValue(files[0]);
   }
 
+  removePhoto(){
+    this.form.get('photo').setValue(null);
+    this.has_photo = false;
+  }
+
+  openPhoneNumberAuthModal(){
+    this.phoneNumberAuthModal.showModal();
+  }
+
   showErrors(){
     return Object.keys(this.errors).length != 0;
   }
 
+  onPhoneNumberVerification() {
+    this.firebaseAuth.getUser().then(
+        user => this.form.get('phone_number').setValue(user.phoneNumber)
+    );
+    this.firebaseAuth.getToken().then(
+        token => this.form.get('token').setValue(token)
+    );
+  }
 }

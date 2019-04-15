@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs/internal/Observable";
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { User } from '../model';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHelperService } from "@auth0/angular-jwt";
 import { environment } from '../../environments/environment';
 
 console.log(environment.production);
@@ -60,12 +60,12 @@ export class AuthService {
 
   logout(): Observable<any>{
     return this.http
-    .post<{token: string}>(`${environment.api.url}/logout`, {})
-    .pipe(
-      tap( () => {
-        this.setToken(null)
-      })
-    );
+      .post<{token: string}>(`${environment.api.url}/logout`, {})
+      .pipe(
+        tap( () => {
+          this.setToken(null)
+        })
+      );
   }
 
   get authorizationHeader(){

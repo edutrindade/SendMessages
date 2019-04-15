@@ -16,7 +16,7 @@ export class AuthProvider {
     return fromPromise(this.firebaseAuth.getToken())
       .pipe(
         flatMap( token => {
-          return this.http.post<{token: string}>('http://localhost:8000/api/login_vendor', {token})
+          return this.http.post<{token: string}>('http://localhost:8000/api/login_vendor', {token});
         })
       );
   }

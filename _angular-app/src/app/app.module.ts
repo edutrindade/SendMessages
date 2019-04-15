@@ -54,6 +54,12 @@ import { ProductOutputListComponent } from './components/pages/product-output/pr
 import { ProductOutputNewModalComponent } from './components/pages/product-output/product-output-new-modal/product-output-new-modal.component';
 import { ProductOutputSearchFormComponent } from './components/pages/product-output/product-output-search-form/product-output-search-form.component';
 import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
+import { PhoneNumberAuthModalComponent } from './components/common/phone-number-auth-modal/phone-number-auth-modal.component';
+import { ChatGroupListComponent } from './components/pages/chat-group/chat-group-list/chat-group-list.component';
+import { ChatGroupFormComponent } from './components/pages/chat-group/chat-group-form/chat-group-form.component';
+import { ChatGroupNewModalComponent } from './components/pages/chat-group/chat-group-new-modal/chat-group-new-modal.component';
+import { ChatGroupEditModalComponent } from './components/pages/chat-group/chat-group-edit-modal/chat-group-edit-modal.component';
+import { ChatGroupDeleteModalComponent } from './components/pages/chat-group/chat-group-delete-modal/chat-group-delete-modal.component';
 
 function jwtFactory(authService: AuthService){
     return {
@@ -112,7 +118,13 @@ function jwtFactory(authService: AuthService){
       ProductOutputListComponent,
       ProductOutputNewModalComponent,
       ProductOutputSearchFormComponent,
-      UserProfileComponent
+      UserProfileComponent,
+      PhoneNumberAuthModalComponent,
+      ChatGroupListComponent,
+      ChatGroupFormComponent,
+      ChatGroupNewModalComponent,
+      ChatGroupEditModalComponent,
+      ChatGroupDeleteModalComponent
     ],
     imports: [
       BrowserModule,

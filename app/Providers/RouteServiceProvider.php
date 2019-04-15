@@ -5,6 +5,7 @@ namespace CodeShopping\Providers;
 use CodeShopping\Models\Category;
 use CodeShopping\Models\Product;
 use CodeShopping\Models\User;
+use CodeShopping\Models\UserProfile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

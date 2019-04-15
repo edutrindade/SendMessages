@@ -1,20 +1,25 @@
-import { MainPage } from './../pages/main/main';
 import { HttpClientModule } from '@angular/common/http';
-import { ResetPhoneNumberPage } from './../pages/reset-phone-number/reset-phone-number';
-import { LoginPhoneNumberPage } from './../pages/login-phone-number/login-phone-number';
-import { LoginOptionsPage } from './../pages/login-options/login-options';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SuperTabsModule } from "ionic2-super-tabs";
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { MainPage } from './../pages/main/main';
+import { ResetPhoneNumberPage } from './../pages/reset-phone-number/reset-phone-number';
+import { LoginPhoneNumberPage } from './../pages/login-phone-number/login-phone-number';
+import { LoginOptionsPage } from './../pages/login-options/login-options';
+import { CustomerCreatePage } from '../pages/customer-create/customer-create';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FirebaseAuthProvider } from '../providers/auth/firebase-auth';
 import { AuthProvider } from '../providers/auth/auth';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CustomerHttpProvider } from '../providers/http/customer-http';
+import { ChatGroupListComponent } from './../components/chat-group-list/chat-group-list';
 
 @NgModule({
   declarations: [
@@ -24,12 +29,16 @@ import { AuthProvider } from '../providers/auth/auth';
     LoginOptionsPage,
     LoginPhoneNumberPage,
     ResetPhoneNumberPage,
-    MainPage
+    CustomerCreatePage,
+    MainPage,
+    ChatGroupListComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    SuperTabsModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -39,14 +48,17 @@ import { AuthProvider } from '../providers/auth/auth';
     LoginOptionsPage,
     LoginPhoneNumberPage,
     ResetPhoneNumberPage,
-    MainPage
+    CustomerCreatePage,
+    MainPage,
+    ChatGroupListComponent
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FirebaseAuthProvider,
-    AuthProvider
+    AuthProvider,
+    CustomerHttpProvider
   ]
 })
 export class AppModule {}

@@ -16,6 +16,7 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'profile' => [
+                'has_photo' => $this->profile->photo ? true: false,
                 'photo_url' => $this->profile->photo_url,
                 'phone_number' => $this->profile->phone_number
             ]

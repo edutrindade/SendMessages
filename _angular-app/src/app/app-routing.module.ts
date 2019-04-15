@@ -1,4 +1,3 @@
-import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import { AuthGuard } from './guards/auth.guard';
@@ -11,6 +10,8 @@ import { ProductListComponent } from './components/pages/product/product-list/pr
 import { UserListComponent } from './components/pages/user/user-list/user-list.component';
 import { AuthService } from './services/auth.service';
 import { ProductPhotoManagerComponent } from './components/pages/product-photo/product-photo-manager/product-photo-manager/product-photo-manager.component';
+import { ChatGroupListComponent } from './components/pages/chat-group/chat-group-list/chat-group-list.component';
+import { UserProfileComponent } from './components/pages/user-profile/user-profile.component';
 
 const routes: Routes = [
 
@@ -65,6 +66,12 @@ const routes: Routes = [
       component: UserProfileComponent, 
       canActivate: [AuthGuard]
   },
+
+  {
+    path: 'chat-groups/list', 
+    component: ChatGroupListComponent, 
+    canActivate: [AuthGuard]
+},
   
   {
       path: '',

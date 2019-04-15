@@ -1,10 +1,11 @@
-import { map } from 'rxjs/operators';
+import { AuthService } from './../auth.service';
+import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 //import { User } from 'src/app/model';
 import { User } from '../../model';
-import { UserProfile } from '../../model';
+//import { UserProfile } from '../../model';
 import { environment } from 'src/environments/environment';
 
 interface Profile {
@@ -22,16 +23,18 @@ export class UserProfileHttpService {
 
   private baseUrl = `${environment.api.url}/profile`;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private authService: AuthService) { 
   }
 
-  update(data: Profile): Observable<User> {
+  update(data: Profile): Observable<{user: User, token: string}> {
     const formData = this.formDataToSend(data);
 
     return this.http
-        .post<{ data: User }>(this.baseUrl, formData)
+        .post<{ user: User, token: string }>(this.baseUrl, formData)
         .pipe(
-            map( response => response.data)
+            tap( response => {
+                this.authService.setToken(response.token);
+            })
         );
   }
 

@@ -3,13 +3,6 @@ import { LoginPhoneNumberPage } from './../login-phone-number/login-phone-number
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 
-/**
- * Generated class for the LoginOptionsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-login-options',

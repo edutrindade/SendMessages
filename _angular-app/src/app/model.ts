@@ -63,6 +63,17 @@ export interface UserProfile{
     photo_url: string;
     phone_number: string;
     password?: string;
+    has_photo?: boolean;
+    readonly created_at?: {date:string};
+    readonly updated_at?: {date:string};
+}
+
+export interface ChatGroup{
+    id?: number;
+    name: string;
+    photo?: File;
+    photo_url: string;
+    count_users?: number;
     readonly created_at?: {date:string};
     readonly updated_at?: {date:string};
 }

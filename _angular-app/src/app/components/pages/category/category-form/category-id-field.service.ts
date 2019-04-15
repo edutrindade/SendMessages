@@ -53,7 +53,10 @@ export class CategoryIdFieldService {
                 }
             }
         }
-        this.data = [];
+        this.data = null;
+        setTimeout(() => {
+                this.data = [];
+        },300);
         this.onClosingDropdown();
     }
 

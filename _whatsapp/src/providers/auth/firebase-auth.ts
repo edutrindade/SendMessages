@@ -1,4 +1,4 @@
-//import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import firebaseConfig from './../../app/firebase-config';
@@ -9,6 +9,8 @@ declare const firebaseui;
 @Injectable()
 export class FirebaseAuthProvider {
 
+  private ui;
+
   constructor() {
     firebase.initializeApp(firebaseConfig);
   }
@@ -17,32 +19,45 @@ export class FirebaseAuthProvider {
     return firebase;
   }
 
-  async makePhoneNumberForm(selectorElement: string){
-    const firebaseui = await this.getFirebaseUI();
+  async makePhoneNumberForm(selectorElement: string): Promise<any>{
     await this.getFirebaseUI();
-    const uiConfig = {
-      signInOptions: [
-        firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-        //firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        //firebase.auth.GoogleAuthProvider
-      ],
-      recaptchaParameters: {
+    return new Promise( (resolve) => {
+      const uiConfig = {
+        signInOptions: [
+          firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          //firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          //firebase.auth.GoogleAuthProvider
+        ],
+        /*recaptchaParameters: {
         //type: 'image', // 'audio'
         //size: 'normal', // 'invisible' or 'compact'
         //badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
-      },
+      },*/
       defaultCountry: 'BR',
       defaultNationalNumber: '+55',
       //whitelistedCountries: ['BR', '+55'],
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+          resolve(true);
           return false;
         }
       }
     };
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start(selectorElement, uiConfig);
+    this.makeFormFirebaseUI(selectorElement, uiConfig);
+    })
+  }
+
+  private makeFormFirebaseUI(selectorElement, uiConfig){
+    if (!this.ui){
+        this.ui = new firebaseui.auth.AuthUI(firebase.auth());
+        this.ui.start(selectorElement, uiConfig);
+    } else {
+        this.ui.delete().then(() => {
+            this.ui = new firebaseui.auth.AuthUI(firebase.auth());
+            this.ui.start(selectorElement, uiConfig);
+        });
+    }
   }
 
   private async getFirebaseUI(): Promise<any> {

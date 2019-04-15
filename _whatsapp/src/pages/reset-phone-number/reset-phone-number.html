@@ -1,15 +1,18 @@
-<!--
-  Generated template for the ResetPhoneNumberPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-  <ion-navbar color="indigo">
-    <ion-title>Mudança de nº do telefone</ion-title>
-  </ion-navbar>
-</ion-header>
+    <ion-navbar color="indigo">
+      <ion-title>Alteração do telefone</ion-title>
+    </ion-navbar>
+  </ion-header>
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>E-mail</ion-label>
+      <ion-input type="text" [formControl]="email"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button color="indigo" block (click)="showFirebaseUI()"
+          [hidden]="canShowFirebaseUi" [disabled]="email.invalid">Continuar
+  </button>
+  <div id="firebase-ui" [hidden]="!canShowFirebaseUi || email.invalid"></div> 
 </ion-content>
