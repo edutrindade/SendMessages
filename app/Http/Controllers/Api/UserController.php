@@ -28,12 +28,13 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        /** @var UserFilter $filter */
         $filter = app(UserFilter::class);
-        /** @var Builder $filterQuery */
-        //$filter = $this->onlyTrashedIfRequested($request, $filter);
-        $filterQuery = User::filtered($filter);
-        $users = $request->has('all') ? $filterQuery->get() : $filterQuery->paginate(10);
+        $query = User::query();
+        $query = $this->onlyTrashedIfRequested($request, $query);
+        $filterQuery = $query->filtered($filter);
+        $users = $filter->hasFilterParameter() ?
+            $filterQuery->get() : 
+            $filterQuery->paginate(10);
         return UserResource::collection($users);
     }
 

@@ -15,7 +15,7 @@ export class ChatGroupDeleteService{
 
     }
 
-    set chatGroupListComponent(value: ChatGroupListComponent){
+    set ChatGroupListComponent(value: ChatGroupListComponent){
         this._chatGroupListComponent = value;
     }
 

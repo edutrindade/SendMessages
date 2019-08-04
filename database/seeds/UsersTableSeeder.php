@@ -21,6 +21,8 @@ class UsersTableSeeder extends Seeder
                     'photo' => $this->getAdminPhoto()
                 ]);
                 Model::unguard();
+                $user->profile->firebase_uid = 'IlOlxoO1NVg2qDJSwd74ZsKIUor1';
+                $user->profile->save();
             });
         
         factory(User::class,1)
@@ -34,12 +36,18 @@ class UsersTableSeeder extends Seeder
                     'phone_number' => '+16505551235',
                 ]);
                 Model::unguard();
+                $user->profile->firebase_uid = '4CVv5PxiIoNs0GBqacsDfaTl9TZ2';
+                $user->profile->save();
             });
         
-        factory(User::class,3)
+        factory(User::class,10)
             ->create([
             'role' => User::ROLE_CUSTOMER
-        ]);
+        ])  ->each(function($user, $key){
+            $user->profile->phone_number = "+165055510{$key}";
+            $user->profile->firebase_uid = "user-{$key}";
+            $user->profile->save();
+        });
     }
 
     public function getAdminPhoto()

@@ -10,6 +10,7 @@ use CodeShopping\Firebase\FirebaseSync;
 
 class UserProfile extends Model
 {
+    use FirebaseSync;
     const BASE_PATH       = 'app/public';
     const DIR_USERS       = 'users';
     const DIR_USER_PHOTO  = self::DIR_USERS . '/photos';
@@ -96,15 +97,25 @@ class UserProfile extends Model
 
     public function getPhotoUrlAttribute()
     {
+        return $this->photo ? 
+            asset("storage/{$this->photo_url_base}"): $this->photo_url_base;
+    }
+
+    public function getPhotoUrlBaseAttribute()
+    {
         $path = self::photoDir();
         return $this->photo ? 
-            asset("storage/{$path}/{$this->photo}"):
-            'https://www.gravatar.com/avatar/nouser.jpg';
+            "{$path}/{$this->photo}":'https://www.gravatar.com/avatar/nouser.jpg';
     }
     
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function syncFbSet()
+    {
+        $this->user->syncFbSetCustom();
     }
 
 }

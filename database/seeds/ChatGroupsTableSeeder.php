@@ -33,7 +33,7 @@ class ChatGroupsTableSeeder extends Seeder
                 ]);
 
                 $customerId = $otherCustomers
-                    ->random(5)
+                    ->random(7)
                     ->pluck('id')->toArray();
                 
                 $group->users()->attach($customerId);

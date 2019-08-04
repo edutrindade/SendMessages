@@ -1,3 +1,4 @@
+import { ChatGroupUserListComponent } from './components/pages/chat-group-user/chat-group-user-list/chat-group-user-list.component';
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import { AuthGuard } from './guards/auth.guard';
@@ -68,10 +69,16 @@ const routes: Routes = [
   },
 
   {
+    path: 'chat-groups/:chat_group/users/list',
+    component: ChatGroupUserListComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {
     path: 'chat-groups/list', 
     component: ChatGroupListComponent, 
     canActivate: [AuthGuard]
-},
+  },
   
   {
       path: '',

@@ -15,7 +15,7 @@ export class ChatGroupInsertService{
 
     }
 
-    set chatGroupListComponent(value: ChatGroupListComponent){
+    set ChatGroupListComponent(value: ChatGroupListComponent){
         this._chatGroupListComponent = value;
     }
     
@@ -24,6 +24,7 @@ export class ChatGroupInsertService{
     }
 
     onInsertError($event: HttpErrorResponse) {
+        this.notifyMessage.error(`Não foi possível cadastrar o grupo!`);
         console.log($event);
     }
 

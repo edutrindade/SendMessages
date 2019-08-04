@@ -12,7 +12,7 @@ use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 
 class ChatGroup extends Model
 {
-    use SoftDeletes, Filterable, FirebaseSync; //PivotEventTrait;
+    use SoftDeletes, Filterable, FirebaseSync, PivotEventTrait;
 
     const BASE_PATH       = 'app/public';
     const DIR_CHAT_GROUPS = 'chat_groups';
@@ -24,13 +24,14 @@ class ChatGroup extends Model
     public static function createWithPhoto (array $data): ChatGroup
     {   
         try {
+            $photo = $data['photo'];
             self::uploadPhoto($data['photo']);
             $data['photo'] = $data['photo']->hashName();
             \DB::beginTransaction();
             $chatGroup = self::create($data);
             \DB::commit();
         } catch (\Exception $e) {
-            self::deleteFile($data['photo']);
+            self::deleteFile($photo);
             \DB::rollBack();
             throw $e;
         }
@@ -119,12 +120,22 @@ class ChatGroup extends Model
     }
 
 
-    protected function syncPivotAttached($model, $relationName, $pivotIds, $pivtIdsAttribute)
+    protected function syncPivotAttached($model, $relationName, $pivotIds, $pivotIdsAttribute)
     {
         $users = User::whereIn('id', $pivotIds)->get();
         $data = [];
         foreach ($users as $user){
-            $data["chat_groups/{$model->id}/users/{$user->profile->firebase_uid}"]= true;
+            $data["chat_groups/{$model->id}/users/{$user->profile->firebase_uid}"] = true;
+        }
+        $this->getFirebaseDatabase()->getReference()->update($data);
+    }
+
+    protected function syncPivotDetached($model, $relationName, $pivotIds)
+    {
+        $users = User::whereIn('id', $pivotIds)->get();
+        $data = [];
+        foreach ($users as $user){
+            $data["chat_groups/{$model->id}/users/{$user->profile->firebase_uid}"] = null;
         }
         $this->getFirebaseDatabase()->getReference()->update($data);
     }

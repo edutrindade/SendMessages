@@ -1,3 +1,4 @@
+import {ChatGroupFormComponent} from './../chat-group-form/chat-group-form.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ChatGroup} from "../../../../Model";
 import {NotifyMessageService} from "../../../../services/notify-message.service";
@@ -40,9 +41,9 @@ export class ChatGroupListComponent implements OnInit {
                 protected chatGroupInsertService: ChatGroupInsertService,
                 protected chatGroupEditService: ChatGroupEditService,
                 protected chatGroupDeleteService: ChatGroupDeleteService){
-        this.chatGroupInsertService.chatGroupListComponent = this;
-        this.chatGroupEditService.chatGroupListComponent = this;
-        this.chatGroupDeleteService.chatGroupListComponent = this;
+        this.chatGroupInsertService.ChatGroupListComponent = this;
+        this.chatGroupEditService.ChatGroupListComponent = this;
+        this.chatGroupDeleteService.ChatGroupListComponent = this;
     }
 
     ngOnInit() {

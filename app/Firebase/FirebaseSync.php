@@ -20,8 +20,13 @@ trait FirebaseSync
             $model->syncFbRemove();
         });
         if (method_exists(__CLASS__, 'pivotAttached')) {
-            static::pivotAttached(function ($model, $relationName, $pivotIds, $pivtIdsAttribute) {
-                $model->syncPivotAttached($model, $relationName, $pivotIds, $pivtIdsAttribute);
+            static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttribute) {
+                $model->syncPivotAttached($model, $relationName, $pivotIds, $pivotIdsAttribute);
+            });
+        };
+        if (method_exists(__CLASS__, 'pivotDetached')) {
+            static::pivotDetached(function ($model, $relationName, $pivotIds) {
+                $model->syncPivotDetached($model, $relationName, $pivotIds);
             });
         };
     }
@@ -42,7 +47,11 @@ trait FirebaseSync
         $this->getModelReference()->remove();
     }
 
-    protected function syncPivotAttached($model, $relationName, $pivotIds, $pivtIdsAttribute){
+    protected function syncPivotAttached($model, $relationName, $pivotIds, $pivotIdsAttribute){
+        throw new \Exception('Not implemented');
+    }
+
+    protected function syncPivotDetached($model, $relationName, $pivotIds){
         throw new \Exception('Not implemented');
     }
 

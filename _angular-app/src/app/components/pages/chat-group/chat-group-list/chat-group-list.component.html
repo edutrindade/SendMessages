@@ -47,3 +47,18 @@
   <pagination-controls (pageChange)="pageChanged($event)"
                        previousLabel="Anterior"
                        nextLabel="Próximo"></pagination-controls>
+
+  <chat-group-new-modal
+    (onSuccess)="chatGroupInsertService.onInsertSucess($event)"
+    (onError)="chatGroupInsertService.onInsertSucess($event)">
+  </chat-group-new-modal>
+
+  <chat-group-edit-modal [chatGroupId]="chatGroupId"
+    (onSuccess)="chatGroupEditService.onEditSucess($event)" 
+    (onError)="chatGroupEditService.onEditError($event)">
+  </chat-group-edit-modal>
+
+  <chat-group-delete-modal [chatGroupId]="chatGroupId"
+    (onSuccess)="chatGroupDeleteService.onDeleteSucess($event)" 
+    (onError)="chatGroupDeleteService.onDeleteError($event)">
+  </chat-group-delete-modal>

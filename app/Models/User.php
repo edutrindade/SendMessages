@@ -6,16 +6,17 @@ namespace CodeShopping\Models;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Notifications\Notifiable;
+use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
+use CodeShopping\Firebase\FirebaseSync;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 use CodeShopping\Models\UserProfile;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, SoftDeletes, Filterable;
+    use Notifiable, SoftDeletes, Filterable, FirebaseSync;
 
     const ROLE_SELLER = 1;      // Vendedor
     const ROLE_CUSTOMER = 2;    // Cliente
@@ -95,7 +96,8 @@ class User extends Authenticatable implements JWTSubject
             'profile' => [
                 'has_photo' => $this->profile->photo ? true: false,
                 'photo_url' => $this->profile->photo_url,
-                'phone_number' => $this->profile->phone_number
+                'phone_number' => $this->profile->phone_number,
+                'firebase_uid' => $this->profile->firebase_uid
             ]
         ];
     }
@@ -104,4 +106,35 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(UserProfile::class)->withDefault();
     }
+
+    protected function syncFbCreate()
+    {
+        $this->syncFbSetCustom();
+    }
+
+    protected function syncFbUpdate()
+    {
+        $this->syncFbSetCustom();
+    }
+
+    protected function syncFbRemove()
+    {
+        $this->syncFbSetCustom();
+    }
+
+    public function syncFbSetCustom()
+    {
+        $this->profile->refresh();
+        if($this->profile->firebase_uid){
+            $database = $this->getFirebaseDatabase();
+            $path = 'users/'.$this->profile->firebase_uid;
+            $reference = $database->getReference($path);
+            $reference->set([
+                'name' => $this->name,
+                'photo_url' => $this->profile->photo_url_base,
+                'deleted_at' => $this->deleted_at
+            ]);
+        }
+    }
+
 }
